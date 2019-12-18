@@ -43,7 +43,7 @@ class EnquestesVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by EnquestesParser#question.
     def visitQuestion(self, ctx:EnquestesParser.QuestionContext):
-
+        print("New question ID")
         self.question_ids.append(ctx.identifier().ID())
 
         return self.visitChildren(ctx)
@@ -83,9 +83,7 @@ class EnquestesVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by EnquestesParser#poll.
     def visitPoll(self, ctx:EnquestesParser.PollContext):
-        self.poll_ids.append(ctx.identifier())
-        child = ctx.getChild(3)
-        print(child.getChildCount())
+        self.poll_ids.append(ctx.identifier().ID())
         return self.visitChildren(ctx)
 
 

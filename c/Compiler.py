@@ -24,6 +24,7 @@ class Compiler:
         token_stream = CommonTokenStream(lexer)
         parser = EnquestesParser(token_stream)
         self.tree = parser.root()
+        print(self.tree.toStringTree(recog=parser))
 
     def visit(self):
         visitor = EnquestesVisitor()
@@ -32,8 +33,8 @@ class Compiler:
         for q in visitor.question_ids:
             self.generator.add_node(q)
 
-        #for p in visitor.poll_ids:
-        #    self.generator.add_node(p)
+        for p in visitor.poll_ids:
+            self.generator.add_node(p)
 
         for a in visitor.answer_ids:
             self.generator.add_node(a)
