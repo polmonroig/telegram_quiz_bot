@@ -7,7 +7,10 @@ class NetworkGenerator:
         self.graph = nx.Graph()
 
     def add_node(self, node):
-        self.graph.add_node(node)
+        self.graph.add_node(str(node))
+
+    def add_edge(self, a, b):
+        self.graph.add_edge(str(a), str(b))
 
     def draw(self):
         options = {

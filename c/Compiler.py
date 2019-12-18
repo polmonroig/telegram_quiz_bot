@@ -39,6 +39,10 @@ class Compiler:
         for a in visitor.answer_ids:
             self.generator.add_node(a)
 
+        for question, answer in visitor.item_pairs:
+            self.generator.add_edge(question, answer)
+
+        self.generator.add_node("END")
         self.generator.draw()
 
 
