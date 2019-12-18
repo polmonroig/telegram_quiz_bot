@@ -48,9 +48,7 @@ class Compiler:
                 self.generator.add_edge(items[i - 1][0], items[i][0])
             self.generator.add_edge(items[-1][0], 'END')
 
-
         for pair in visitor.item_pairs.items():
-
             self.generator.add_edge(pair[1][0], pair[1][1])
 
         self.generator.add_node("END")
