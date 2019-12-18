@@ -29,8 +29,8 @@ alternativeAnswer : innerAlt | innerAlt ',' alternativeAnswer;
 innerAlt : '(' NUMBER ',' identifier ')';
 
 identifier : ID;
-itemIds : ID;
-poll : identifier COLON 'ENQUESTA' itemIds+;
+itemIds : STRING;
+poll : identifier COLON 'ENQUESTA' itemIds;
 
 end : 'END';
 

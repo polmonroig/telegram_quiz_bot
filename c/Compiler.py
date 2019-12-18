@@ -38,14 +38,20 @@ class Compiler:
 
         for poll_id, item_list in zip(visitor.poll_ids, visitor.poll_item_list):
             self.generator.add_node(poll_id)
-            for item in item_list:
-                print(type(item))
+            items_ids = str(item_list).split()
+            items = []
+            for id in items_ids:
+                items.append(visitor.item_pairs[id])
+
+            self.generator.add_edge(poll_id, items[0][0])
+            for i in range(1, len(items)):
+                self.generator.add_edge(items[i - 1][0], items[i][0])
+            self.generator.add_edge(items[-1][0], 'END')
 
 
+        for pair in visitor.item_pairs.items():
 
-
-        for question, answer in visitor.item_pairs:
-            self.generator.add_edge(question, answer)
+            self.generator.add_edge(pair[1][0], pair[1][1])
 
         self.generator.add_node("END")
         self.generator.draw()

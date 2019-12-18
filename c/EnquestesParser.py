@@ -6,7 +6,7 @@ from io import StringIO
 def serializedATN():
     with StringIO() as buf:
         buf.write("\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\26")
-        buf.write("x\4\2\t\2\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b")
+        buf.write("u\4\2\t\2\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b")
         buf.write("\t\b\4\t\t\t\4\n\t\n\4\13\t\13\4\f\t\f\4\r\t\r\4\16\t")
         buf.write("\16\4\17\t\17\4\20\t\20\4\21\t\21\3\2\3\2\3\2\3\2\3\3")
         buf.write("\3\3\3\3\3\3\3\3\3\3\5\3-\n\3\3\3\3\3\7\3\61\n\3\f\3\16")
@@ -14,32 +14,31 @@ def serializedATN():
         buf.write("\6\6A\n\6\r\6\16\6B\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\b\3")
         buf.write("\b\3\b\3\b\3\b\3\b\3\b\3\b\3\t\3\t\3\t\3\t\3\t\5\tY\n")
         buf.write("\t\3\n\3\n\3\n\3\n\3\n\3\n\3\13\3\13\3\f\3\f\3\r\3\r\3")
-        buf.write("\r\3\r\6\ri\n\r\r\r\16\rj\3\16\3\16\3\17\3\17\3\20\3\20")
-        buf.write("\3\21\3\21\3\21\3\21\3\21\3\21\2\3\4\22\2\4\6\b\n\f\16")
-        buf.write("\20\22\24\26\30\32\34\36 \2\3\3\2\20\21o\2\"\3\2\2\2\4")
-        buf.write(",\3\2\2\2\6\65\3\2\2\2\b\67\3\2\2\2\n<\3\2\2\2\fD\3\2")
-        buf.write("\2\2\16K\3\2\2\2\20X\3\2\2\2\22Z\3\2\2\2\24`\3\2\2\2\26")
-        buf.write("b\3\2\2\2\30d\3\2\2\2\32l\3\2\2\2\34n\3\2\2\2\36p\3\2")
-        buf.write("\2\2 r\3\2\2\2\"#\5\4\3\2#$\5\32\16\2$%\7\2\2\3%\3\3\2")
-        buf.write("\2\2&\'\b\3\1\2\'-\5\b\5\2(-\5\n\6\2)-\5\f\7\2*-\5\16")
-        buf.write("\b\2+-\5\30\r\2,&\3\2\2\2,(\3\2\2\2,)\3\2\2\2,*\3\2\2")
-        buf.write("\2,+\3\2\2\2-\62\3\2\2\2./\f\b\2\2/\61\5\4\3\t\60.\3\2")
-        buf.write("\2\2\61\64\3\2\2\2\62\60\3\2\2\2\62\63\3\2\2\2\63\5\3")
-        buf.write("\2\2\2\64\62\3\2\2\2\65\66\t\2\2\2\66\7\3\2\2\2\678\5")
-        buf.write("\24\13\289\7\22\2\29:\7\3\2\2:;\5\6\4\2;\t\3\2\2\2<=\5")
-        buf.write("\24\13\2=>\7\22\2\2>@\7\4\2\2?A\5 \21\2@?\3\2\2\2AB\3")
-        buf.write("\2\2\2B@\3\2\2\2BC\3\2\2\2C\13\3\2\2\2DE\5\24\13\2EF\7")
-        buf.write("\22\2\2FG\7\5\2\2GH\5\34\17\2HI\7\16\2\2IJ\5\36\20\2J")
-        buf.write("\r\3\2\2\2KL\5\24\13\2LM\7\22\2\2MN\7\6\2\2NO\5\24\13")
-        buf.write("\2OP\7\7\2\2PQ\5\20\t\2QR\7\b\2\2R\17\3\2\2\2SY\5\22\n")
-        buf.write("\2TU\5\22\n\2UV\7\t\2\2VW\5\20\t\2WY\3\2\2\2XS\3\2\2\2")
-        buf.write("XT\3\2\2\2Y\21\3\2\2\2Z[\7\n\2\2[\\\7\17\2\2\\]\7\t\2")
-        buf.write("\2]^\5\24\13\2^_\7\13\2\2_\23\3\2\2\2`a\7\20\2\2a\25\3")
-        buf.write("\2\2\2bc\7\20\2\2c\27\3\2\2\2de\5\24\13\2ef\7\22\2\2f")
-        buf.write("h\7\f\2\2gi\5\26\f\2hg\3\2\2\2ij\3\2\2\2jh\3\2\2\2jk\3")
-        buf.write("\2\2\2k\31\3\2\2\2lm\7\r\2\2m\33\3\2\2\2no\7\20\2\2o\35")
-        buf.write("\3\2\2\2pq\7\20\2\2q\37\3\2\2\2rs\7\17\2\2st\7\22\2\2")
-        buf.write("tu\5\6\4\2uv\7\23\2\2v!\3\2\2\2\7,\62BXj")
+        buf.write("\r\3\r\3\r\3\16\3\16\3\17\3\17\3\20\3\20\3\21\3\21\3\21")
+        buf.write("\3\21\3\21\3\21\2\3\4\22\2\4\6\b\n\f\16\20\22\24\26\30")
+        buf.write("\32\34\36 \2\3\3\2\20\21k\2\"\3\2\2\2\4,\3\2\2\2\6\65")
+        buf.write("\3\2\2\2\b\67\3\2\2\2\n<\3\2\2\2\fD\3\2\2\2\16K\3\2\2")
+        buf.write("\2\20X\3\2\2\2\22Z\3\2\2\2\24`\3\2\2\2\26b\3\2\2\2\30")
+        buf.write("d\3\2\2\2\32i\3\2\2\2\34k\3\2\2\2\36m\3\2\2\2 o\3\2\2")
+        buf.write("\2\"#\5\4\3\2#$\5\32\16\2$%\7\2\2\3%\3\3\2\2\2&\'\b\3")
+        buf.write("\1\2\'-\5\b\5\2(-\5\n\6\2)-\5\f\7\2*-\5\16\b\2+-\5\30")
+        buf.write("\r\2,&\3\2\2\2,(\3\2\2\2,)\3\2\2\2,*\3\2\2\2,+\3\2\2\2")
+        buf.write("-\62\3\2\2\2./\f\b\2\2/\61\5\4\3\t\60.\3\2\2\2\61\64\3")
+        buf.write("\2\2\2\62\60\3\2\2\2\62\63\3\2\2\2\63\5\3\2\2\2\64\62")
+        buf.write("\3\2\2\2\65\66\t\2\2\2\66\7\3\2\2\2\678\5\24\13\289\7")
+        buf.write("\22\2\29:\7\3\2\2:;\5\6\4\2;\t\3\2\2\2<=\5\24\13\2=>\7")
+        buf.write("\22\2\2>@\7\4\2\2?A\5 \21\2@?\3\2\2\2AB\3\2\2\2B@\3\2")
+        buf.write("\2\2BC\3\2\2\2C\13\3\2\2\2DE\5\24\13\2EF\7\22\2\2FG\7")
+        buf.write("\5\2\2GH\5\34\17\2HI\7\16\2\2IJ\5\36\20\2J\r\3\2\2\2K")
+        buf.write("L\5\24\13\2LM\7\22\2\2MN\7\6\2\2NO\5\24\13\2OP\7\7\2\2")
+        buf.write("PQ\5\20\t\2QR\7\b\2\2R\17\3\2\2\2SY\5\22\n\2TU\5\22\n")
+        buf.write("\2UV\7\t\2\2VW\5\20\t\2WY\3\2\2\2XS\3\2\2\2XT\3\2\2\2")
+        buf.write("Y\21\3\2\2\2Z[\7\n\2\2[\\\7\17\2\2\\]\7\t\2\2]^\5\24\13")
+        buf.write("\2^_\7\13\2\2_\23\3\2\2\2`a\7\20\2\2a\25\3\2\2\2bc\7\21")
+        buf.write("\2\2c\27\3\2\2\2de\5\24\13\2ef\7\22\2\2fg\7\f\2\2gh\5")
+        buf.write("\26\f\2h\31\3\2\2\2ij\7\r\2\2j\33\3\2\2\2kl\7\20\2\2l")
+        buf.write("\35\3\2\2\2mn\7\20\2\2n\37\3\2\2\2op\7\17\2\2pq\7\22\2")
+        buf.write("\2qr\5\6\4\2rs\7\23\2\2s!\3\2\2\2\6,\62BX")
         return buf.getvalue()
 
 
@@ -135,6 +134,12 @@ class EnquestesParser ( Parser ):
         def getRuleIndex(self):
             return EnquestesParser.RULE_root
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitRoot" ):
+                return visitor.visitRoot(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
@@ -193,6 +198,12 @@ class EnquestesParser ( Parser ):
 
         def getRuleIndex(self):
             return EnquestesParser.RULE_expression
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitExpression" ):
+                return visitor.visitExpression(self)
+            else:
+                return visitor.visitChildren(self)
 
 
 
@@ -278,6 +289,12 @@ class EnquestesParser ( Parser ):
         def getRuleIndex(self):
             return EnquestesParser.RULE_text
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitText" ):
+                return visitor.visitText(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
@@ -321,6 +338,12 @@ class EnquestesParser ( Parser ):
 
         def getRuleIndex(self):
             return EnquestesParser.RULE_question
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitQuestion" ):
+                return visitor.visitQuestion(self)
+            else:
+                return visitor.visitChildren(self)
 
 
 
@@ -369,6 +392,12 @@ class EnquestesParser ( Parser ):
 
         def getRuleIndex(self):
             return EnquestesParser.RULE_answer
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitAnswer" ):
+                return visitor.visitAnswer(self)
+            else:
+                return visitor.visitChildren(self)
 
 
 
@@ -434,6 +463,12 @@ class EnquestesParser ( Parser ):
         def getRuleIndex(self):
             return EnquestesParser.RULE_item
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitItem" ):
+                return visitor.visitItem(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
@@ -486,6 +521,12 @@ class EnquestesParser ( Parser ):
         def getRuleIndex(self):
             return EnquestesParser.RULE_alternative
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitAlternative" ):
+                return visitor.visitAlternative(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
@@ -533,6 +574,12 @@ class EnquestesParser ( Parser ):
 
         def getRuleIndex(self):
             return EnquestesParser.RULE_alternativeAnswer
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitAlternativeAnswer" ):
+                return visitor.visitAlternativeAnswer(self)
+            else:
+                return visitor.visitChildren(self)
 
 
 
@@ -586,6 +633,12 @@ class EnquestesParser ( Parser ):
         def getRuleIndex(self):
             return EnquestesParser.RULE_innerAlt
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitInnerAlt" ):
+                return visitor.visitInnerAlt(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
@@ -625,6 +678,12 @@ class EnquestesParser ( Parser ):
         def getRuleIndex(self):
             return EnquestesParser.RULE_identifier
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitIdentifier" ):
+                return visitor.visitIdentifier(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
@@ -650,11 +709,17 @@ class EnquestesParser ( Parser ):
             super().__init__(parent, invokingState)
             self.parser = parser
 
-        def ID(self):
-            return self.getToken(EnquestesParser.ID, 0)
+        def STRING(self):
+            return self.getToken(EnquestesParser.STRING, 0)
 
         def getRuleIndex(self):
             return EnquestesParser.RULE_itemIds
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitItemIds" ):
+                return visitor.visitItemIds(self)
+            else:
+                return visitor.visitChildren(self)
 
 
 
@@ -666,7 +731,7 @@ class EnquestesParser ( Parser ):
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 96
-            self.match(EnquestesParser.ID)
+            self.match(EnquestesParser.STRING)
         except RecognitionException as re:
             localctx.exception = re
             self._errHandler.reportError(self, re)
@@ -688,15 +753,18 @@ class EnquestesParser ( Parser ):
         def COLON(self):
             return self.getToken(EnquestesParser.COLON, 0)
 
-        def itemIds(self, i:int=None):
-            if i is None:
-                return self.getTypedRuleContexts(EnquestesParser.ItemIdsContext)
-            else:
-                return self.getTypedRuleContext(EnquestesParser.ItemIdsContext,i)
+        def itemIds(self):
+            return self.getTypedRuleContext(EnquestesParser.ItemIdsContext,0)
 
 
         def getRuleIndex(self):
             return EnquestesParser.RULE_poll
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitPoll" ):
+                return visitor.visitPoll(self)
+            else:
+                return visitor.visitChildren(self)
 
 
 
@@ -713,20 +781,8 @@ class EnquestesParser ( Parser ):
             self.match(EnquestesParser.COLON)
             self.state = 100
             self.match(EnquestesParser.T__9)
-            self.state = 102 
-            self._errHandler.sync(self)
-            _alt = 1
-            while _alt!=2 and _alt!=ATN.INVALID_ALT_NUMBER:
-                if _alt == 1:
-                    self.state = 101
-                    self.itemIds()
-
-                else:
-                    raise NoViableAltException(self)
-                self.state = 104 
-                self._errHandler.sync(self)
-                _alt = self._interp.adaptivePredict(self._input,4,self._ctx)
-
+            self.state = 101
+            self.itemIds()
         except RecognitionException as re:
             localctx.exception = re
             self._errHandler.reportError(self, re)
@@ -745,6 +801,12 @@ class EnquestesParser ( Parser ):
         def getRuleIndex(self):
             return EnquestesParser.RULE_end
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitEnd" ):
+                return visitor.visitEnd(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
@@ -754,7 +816,7 @@ class EnquestesParser ( Parser ):
         self.enterRule(localctx, 24, self.RULE_end)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 106
+            self.state = 103
             self.match(EnquestesParser.T__10)
         except RecognitionException as re:
             localctx.exception = re
@@ -776,6 +838,12 @@ class EnquestesParser ( Parser ):
         def getRuleIndex(self):
             return EnquestesParser.RULE_questionId
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitQuestionId" ):
+                return visitor.visitQuestionId(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
@@ -785,7 +853,7 @@ class EnquestesParser ( Parser ):
         self.enterRule(localctx, 26, self.RULE_questionId)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 108
+            self.state = 105
             self.match(EnquestesParser.ID)
         except RecognitionException as re:
             localctx.exception = re
@@ -807,6 +875,12 @@ class EnquestesParser ( Parser ):
         def getRuleIndex(self):
             return EnquestesParser.RULE_answerId
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitAnswerId" ):
+                return visitor.visitAnswerId(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
@@ -816,7 +890,7 @@ class EnquestesParser ( Parser ):
         self.enterRule(localctx, 28, self.RULE_answerId)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 110
+            self.state = 107
             self.match(EnquestesParser.ID)
         except RecognitionException as re:
             localctx.exception = re
@@ -848,6 +922,12 @@ class EnquestesParser ( Parser ):
         def getRuleIndex(self):
             return EnquestesParser.RULE_numeratedAnswer
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitNumeratedAnswer" ):
+                return visitor.visitNumeratedAnswer(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
@@ -857,13 +937,13 @@ class EnquestesParser ( Parser ):
         self.enterRule(localctx, 30, self.RULE_numeratedAnswer)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 112
+            self.state = 109
             self.match(EnquestesParser.NUMBER)
-            self.state = 113
+            self.state = 110
             self.match(EnquestesParser.COLON)
-            self.state = 114
+            self.state = 111
             self.text()
-            self.state = 115
+            self.state = 112
             self.match(EnquestesParser.SEMICOLON)
         except RecognitionException as re:
             localctx.exception = re

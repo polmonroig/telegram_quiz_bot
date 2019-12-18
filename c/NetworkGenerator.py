@@ -19,7 +19,7 @@ class NetworkGenerator:
         options = {
             'node_color': self.NODE_COLOR,
             'node_size': 1000,
-            'width': 3,
+            'width': 2,
             'with_labels' : True,
             'edge_color' : self.ITEM_COLOR
         }
