@@ -48,14 +48,14 @@ class Compiler:
             for id in items_ids:
                 items.append(visitor.item_pairs[id])
 
-            self.generator.add_edge(poll_id, items[0][0])
+            self.generator.add_poll_edge(str(poll_id), items[0][0])
             for i in range(1, len(items)):
-                self.generator.add_edge(items[i - 1][0], items[i][0])
-            self.generator.add_edge(items[-1][0], 'END')
+                self.generator.add_poll_edge(items[i - 1][0], items[i][0])
+            self.generator.add_poll_edge(items[-1][0], 'END')
 
         # add item edges
         for pair in visitor.item_pairs.items():
-            self.generator.add_edge(pair[1][0], pair[1][1])
+            self.generator.add_item_edge(pair[1][0], pair[1][1], pair[0])
 
         print(visitor.item_pairs)
 
@@ -64,7 +64,7 @@ class Compiler:
             questionId = visitor.item_pairs[alt[0]][0]
             print(alt)
             for a in alt[1]:
-                self.generator.add_edge(questionId, visitor.item_pairs[a[1]][0])
+                self.generator.add_alt_edge(questionId, visitor.item_pairs[a[1]][0], a[0])
 
 
         self.generator.draw()
