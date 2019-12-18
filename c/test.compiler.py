@@ -6,6 +6,7 @@ def main():
     compiler.read()
     compiler.parse()
     compiler.visit()
+    compiler.save_graph()
 
 
 

@@ -12,12 +12,12 @@ class BotTalker:
 
     def add_commands(self):
         self.dispatcher.add_handler(CommandHandler('start', self.start))
-        self.dispatcher.add_handler(CommandHandler('start', self.start))
-        self.dispatcher.add_handler(CommandHandler('start', self.start))
-        self.dispatcher.add_handler(CommandHandler('start', self.start))
-        self.dispatcher.add_handler(CommandHandler('start', self.start))
-        self.dispatcher.add_handler(CommandHandler('start', self.start))
-        self.dispatcher.add_handler(CommandHandler('start', self.start))
+        self.dispatcher.add_handler(CommandHandler('help', self.help))
+        self.dispatcher.add_handler(CommandHandler('author', self.author))
+        self.dispatcher.add_handler(CommandHandler('quiz', self.quiz))
+        self.dispatcher.add_handler(CommandHandler('bar', self.bar))
+        self.dispatcher.add_handler(CommandHandler('pie', self.pie))
+        self.dispatcher.add_handler(CommandHandler('report', self.report))
 
     def init(self):
         self.updater.start_polling()

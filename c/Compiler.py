@@ -4,7 +4,7 @@ from EnquestesLexer import EnquestesLexer
 from EnquestesParser import EnquestesParser
 from EnquestesVisitor import EnquestesVisitor
 from NetworkGenerator import NetworkGenerator
-import codecs
+import pickle
 
 
 class Compiler:
@@ -32,10 +32,10 @@ class Compiler:
 
         # add base nodes
         for q in visitor.question_ids:
-            self.generator.add_node(q)
+            self.generator.add_node(q, "")
 
         for a in visitor.answer_ids:
-            self.generator.add_node(a)
+            self.generator.add_node(a, "")
 
         # add the end node
         self.generator.add_node("END")
@@ -57,16 +57,15 @@ class Compiler:
         for pair in visitor.item_pairs.items():
             self.generator.add_item_edge(pair[1][0], pair[1][1], pair[0])
 
-        print(visitor.item_pairs)
-
         # add alternative edges
         for alt in visitor.alternative_pairs.items():
             questionId = visitor.item_pairs[alt[0]][0]
-            print(alt)
             for a in alt[1]:
                 self.generator.add_alt_edge(questionId, visitor.item_pairs[a[1]][0], a[0])
 
-
         self.generator.draw()
 
+
+    def save_graph(self):
+        pickle.dump( self.generator, open( "GraphGenerator.p", "wb" ))
 

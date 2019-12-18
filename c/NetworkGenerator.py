@@ -13,8 +13,8 @@ class NetworkGenerator:
         self.alt_edges = []
         self.labels = {}
 
-    def add_node(self, node):
-        self.graph.add_node(str(node))
+    def add_node(self, node, content):
+        self.graph.add_node(str(node), content=content)
 
     def add_item_edge(self, a, b, label):
         self.item_edges.append((a, b))
@@ -41,3 +41,5 @@ class NetworkGenerator:
         nx.draw_networkx_edges(self.graph, pos=pos, edgelist=self.alt_edges, edge_color=self.ALT_COLOR)
         nx.draw_networkx_edge_labels(self.graph, pos=pos, edge_labels=self.labels)
         plt.savefig("path.png")
+
+
