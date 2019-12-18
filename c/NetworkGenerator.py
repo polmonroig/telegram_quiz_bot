@@ -16,14 +16,8 @@ class NetworkGenerator:
         self.graph.add_edge(str(a), str(b))
 
     def draw(self):
-        options = {
-            'node_color': self.NODE_COLOR,
-            'node_size': 1000,
-            'width': 2,
-            'with_labels' : True,
-            'edge_color' : self.ITEM_COLOR
-        }
+
         # specifiy edge labels explicitly
         pos = nx.spring_layout(self.graph, k=0.5, iterations=50)
-        nx.draw(self.graph, **options)
+        nx.draw_networkx_nodes(self.graph, pos=pos)
         plt.savefig("path.png")
