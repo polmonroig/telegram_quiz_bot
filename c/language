@@ -37,6 +37,6 @@ I5: ITEM
 P5 -> R5
 A1: ALTERNATIVA                      // La resposta a I3 pot implicar una
 I3 [(2,I4),(3,I5)]                   // altra pregunta
-E: ENQUESTA                          // La llista de preguntes de l’enquesta
+E: ENQUESTA                          
 I1 I2 I3
 END
