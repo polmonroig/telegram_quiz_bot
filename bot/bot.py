@@ -1,4 +1,15 @@
-import telegram
+from BotTalker import BotTalker
 
-bot = telegram.Bot(token='TOKEN')
 
+
+
+def main():
+    TOKEN = open('token.txt').read().strip()
+    talker = BotTalker(TOKEN)
+    talker.add_commands()
+    talker.init()
+
+
+
+if __name__ == "__main__":
+    main()
