@@ -10,15 +10,18 @@ root : expression end EOF;
 expression : expression expression
             | question | answer | item | alternative | poll;
 
+itemIds : ID;
 identifier : ID;
+
 text : (STRING | ID);
 
 question : identifier COLON 'PREGUNTA' text;
-
+questionId : ID;
+answerId : ID;
 
 
 answer : identifier COLON 'RESPOSTA' numeratedAnswer+;
-item : identifier COLON 'ITEM' identifier ARROW identifier;
+item : identifier COLON 'ITEM' questionId ARROW answerId;
 
 alternative :  identifier COLON 'ALTERNATIVA'
                identifier '[' alternativeAnswer ']';
@@ -26,7 +29,9 @@ alternative :  identifier COLON 'ALTERNATIVA'
 alternativeAnswer : innerAlt | innerAlt ',' alternativeAnswer;
 innerAlt : '(' NUMBER ',' identifier ')';
 
-poll : identifier COLON 'ENQUESTA' identifier+;
+
+
+poll : identifier COLON 'ENQUESTA' itemIds+;
 
 end : 'END';
 
