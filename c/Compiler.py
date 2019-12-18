@@ -30,12 +30,17 @@ class Compiler:
         visitor = EnquestesVisitor()
         visitor.visitRoot(self.tree)  # save questions and things
 
+        # add base nodes
         for q in visitor.question_ids:
             self.generator.add_node(q)
 
         for a in visitor.answer_ids:
             self.generator.add_node(a)
 
+        # add the end node
+        self.generator.add_node("END")
+
+        # add poll relationships
         for poll_id, item_list in zip(visitor.poll_ids, visitor.poll_item_list):
             self.generator.add_node(poll_id)
             items_ids = str(item_list).split()
@@ -48,10 +53,20 @@ class Compiler:
                 self.generator.add_edge(items[i - 1][0], items[i][0])
             self.generator.add_edge(items[-1][0], 'END')
 
+        # add item edges
         for pair in visitor.item_pairs.items():
             self.generator.add_edge(pair[1][0], pair[1][1])
 
-        self.generator.add_node("END")
+        print(visitor.item_pairs)
+
+        # add alternative edges
+        for alt in visitor.alternative_pairs.items():
+            questionId = visitor.item_pairs[alt[0]][0]
+            print(alt)
+            for a in alt[1]:
+                self.generator.add_edge(questionId, visitor.item_pairs[a[1]][0])
+
+
         self.generator.draw()
 
 

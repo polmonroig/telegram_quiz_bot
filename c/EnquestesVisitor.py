@@ -53,14 +53,13 @@ class EnquestesVisitor(ParseTreeVisitor):
     # Visit a parse tree produced by EnquestesParser#alternative.
     def visitAlternative(self, ctx:EnquestesParser.AlternativeContext):
         alt = ctx.alternativeAnswer()
-        self.alternative_pairs[str(ctx.identifier(0).ID())] = []
+        self.alternative_pairs[str(ctx.identifier(1).ID())] = []
         while alt is not None:
             answer_id = str(alt.innerAlt().NUMBER())
             item_id = str(alt.innerAlt().identifier().ID())
-            self.alternative_pairs[str(ctx.identifier(0).ID())].append((answer_id, item_id))
+            self.alternative_pairs[str(ctx.identifier(1).ID())].append((answer_id, item_id))
             alt = alt.alternativeAnswer()
 
-        print(self.alternative_pairs)
         return self.visitChildren(ctx)
 
 
