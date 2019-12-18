@@ -24,7 +24,7 @@ class Compiler:
         token_stream = CommonTokenStream(lexer)
         parser = EnquestesParser(token_stream)
         self.tree = parser.root()
-        print(self.tree.toStringTree(recog=parser))
+
 
     def visit(self):
         visitor = EnquestesVisitor()
