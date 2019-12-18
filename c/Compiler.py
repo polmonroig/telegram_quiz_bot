@@ -33,11 +33,16 @@ class Compiler:
         for q in visitor.question_ids:
             self.generator.add_node(q)
 
-        for p in visitor.poll_ids:
-            self.generator.add_node(p)
-
         for a in visitor.answer_ids:
             self.generator.add_node(a)
+
+        for poll_id, item_list in zip(visitor.poll_ids, visitor.poll_item_list):
+            self.generator.add_node(poll_id)
+            for item in item_list:
+                print(type(item))
+
+
+
 
         for question, answer in visitor.item_pairs:
             self.generator.add_edge(question, answer)

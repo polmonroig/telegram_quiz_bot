@@ -15,6 +15,7 @@ class EnquestesVisitor(ParseTreeVisitor):
         self.alternative_ids = []
         self.item_pairs = []
         self.poll_ids = []
+        self.poll_item_list = []
 
     # Visit a parse tree produced by EnquestesParser#root.
     def visitRoot(self, ctx:EnquestesParser.RootContext):
@@ -87,6 +88,7 @@ class EnquestesVisitor(ParseTreeVisitor):
     # Visit a parse tree produced by EnquestesParser#poll.
     def visitPoll(self, ctx:EnquestesParser.PollContext):
         self.poll_ids.append(ctx.identifier().ID())
+        self.poll_item_list.append(ctx.itemIds())
         return self.visitChildren(ctx)
 
 

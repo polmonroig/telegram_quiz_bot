@@ -10,14 +10,13 @@ root : expression end EOF;
 expression : expression expression
             | question | answer | item | alternative | poll;
 
-itemIds : ID;
-identifier : ID;
+
+
 
 text : (STRING | ID);
 
 question : identifier COLON 'PREGUNTA' text;
-questionId : ID;
-answerId : ID;
+
 
 
 answer : identifier COLON 'RESPOSTA' numeratedAnswer+;
@@ -29,12 +28,14 @@ alternative :  identifier COLON 'ALTERNATIVA'
 alternativeAnswer : innerAlt | innerAlt ',' alternativeAnswer;
 innerAlt : '(' NUMBER ',' identifier ')';
 
-
-
+identifier : ID;
+itemIds : ID;
 poll : identifier COLON 'ENQUESTA' itemIds+;
 
 end : 'END';
 
+questionId : ID;
+answerId : ID;
 
 numeratedAnswer : NUMBER COLON text SEMICOLON;
 
@@ -42,11 +43,10 @@ numeratedAnswer : NUMBER COLON text SEMICOLON;
 
 
 // lexer rules
-NUMBER : [0-9]+;
-ACCENTS : 'à' | 'á' | 'é' | 'è' | 'í' | 'ì' | 'ó' | 'ò' | 'ú' | 'ù';
 ARROW : '->';
-ID : ([0-9] | [a-z] | [A-Z] | ACCENTS | '?')+;
-STRING : ([0-9] | [a-z] | [A-Z] | ACCENTS | '?')+ ' '* STRING | ([0-9] | [a-z] | [A-Z] | ACCENTS | '?')+;
+NUMBER : [0-9]+;
+ID: ([0-9] | [a-z] | [A-Z] | [\u0080-\u00FF])+;
+STRING : ([0-9] | [a-z] | [A-Z] | [\u0080-\u00FF] | '?')+ ' '* STRING | ([0-9] | [a-z] | [A-Z] | [\u0080-\u00FF] | '?')+;
 COLON : ':';
 SEMICOLON : ';';
 
