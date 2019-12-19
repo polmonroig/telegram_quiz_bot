@@ -3,6 +3,7 @@ from telegram.ext import Updater
 from telegram.ext import CommandHandler, MessageHandler, Filters
 from telegram import ParseMode
 import pickle
+import matplotlib.pyplot as plt
 import networkx as nx
 
 
@@ -26,8 +27,8 @@ class BotTalker:
         self.dispatcher.add_handler(CommandHandler('help', self.help))
         self.dispatcher.add_handler(CommandHandler('author', self.author))
         self.dispatcher.add_handler(CommandHandler('quiz', self.quiz, pass_args=True))
-        self.dispatcher.add_handler(CommandHandler('bar', self.bar))
-        self.dispatcher.add_handler(CommandHandler('pie', self.pie))
+        self.dispatcher.add_handler(CommandHandler('bar', self.bar, pass_args=True))
+        self.dispatcher.add_handler(CommandHandler('pie', self.pie, pass_args=True))
         self.dispatcher.add_handler(CommandHandler('report', self.report))
 
     def init(self):
@@ -42,10 +43,21 @@ class BotTalker:
 
     @staticmethod
     def help(bot, update):
-        """
-        TODO
-        """
-        bot.send_message(chat_id=update.message.chat_id, text="Help screen not implemented")
+        bot.send_message(chat_id=update.message.chat_id, text="*Ajuda del chatbot de enquestes*\n"
+                         "/start: inicialitza el bot\n"
+                         "/help: mostra la pantalla d'ajuda actual amb la descripcio de cada comanda\n"
+                         "/author: mostra la descripcio de l'autor de la aplicacio\n"
+                         "/quiz <idEnquesta> donat el identificador de una encuesta especifica,"
+                                                              "s'initializa la secuencia de preguntes\n"
+                         "/bar <idPregunta> donat el identificador de una pregunta especifica es mostra "
+                                                              "un diagrama de barres cada resposta de "
+                                                              "la pregunta seleccionada i la quantitat de "
+                                                              "cada resposta\n"
+                         "/pie <idPregunta> donat el identificador de una pregunta especifica es mostra"
+                                                              "un diagrama de formatget similar al diagrama "
+                                                              "de barres nomes que amb un altre tipus de visualitzacio\n"
+                         "/report mostra las estadistiques de totes les preguntes\n",
+                         parse_mode=ParseMode.MARKDOWN)
 
     @staticmethod
     def author(bot, update):
@@ -59,22 +71,35 @@ class BotTalker:
             else:
                 self.answers_data[self.node][self.answer] = 1
         else:
-            self.answers_data[self.node] = {self.answer : 1}
+            self.answers_data[self.node] = {self.answer: 1}
+
+    def good_answer(self):
+        answer_index = self.find_node_by_type("answer")
+        for answer in self.graph.nodes[answer_index]['content']:
+            if answer[0] == self.answer:
+                return True
+        return False
 
     def read_answer(self, bot, update):
         msg = update.message.text
         if self.quiz_started:
             self.answer = msg
-            self.update_answers()
-            question = self.get_question()
-            if question is not None:
-                bot.send_message(chat_id=update.message.chat_id, text=question)
+            if self.good_answer():
+                self.update_answers()
+                question = self.get_question()
+                if question is not None:
+                    bot.send_message(chat_id=update.message.chat_id, text=question)
+                else:
+                    bot.send_message(chat_id=update.message.chat_id, text=self.poll_id + "> Gràcies pel teu temps!")
+                    print(self.answers_data)
+                    # reset bot state
+                    self.answer = None
+                    self.quiz_started = False
+                    file = open("talker.p", "wb")
+                    pickle.dump(self, file)
+                    file.close()
             else:
-                bot.send_message(chat_id=update.message.chat_id, text=self.poll_id + "> Gràcies pel teu temps!")
-                print(self.answers_data)
-                # reset bot state
-                self.answer = None
-                self.quiz_started = False
+                bot.send_message(chat_id=update.message.chat_id, text="Esa no es una respuesta valida")
 
     def find_node_by_type(self, node_type):
         for i in self.successors:
@@ -174,7 +199,6 @@ class BotTalker:
         self.node = self.find_node_by_type("question")
         self.successors = list(self.graph.successors(self.node))
 
-
     def quiz(self, bot, update, args):
         self.quiz_started = True
         self.poll_id = args[0]
@@ -190,23 +214,54 @@ class BotTalker:
             bot.send_message(chat_id=update.message.chat_id, text=question)
             # read answer
             self.dispatcher.add_handler(MessageHandler(Filters.text, self.read_answer))
+
         else:
             bot.send_message(chat_id=update.message.chat_id, text="No existe la encuesta seleccionada")
 
-    @staticmethod
-    def bar(bot, update):
-        bot.send_message(chat_id=update.message.chat_id, text="Not implemented")
 
-    @staticmethod
-    def pie(bot, update):
-        bot.send_message(chat_id=update.message.chat_id, text="Not implemented")
 
+    def save_bar_plot(self, question_id):
+        names = list(self.answers_data[question_id].keys())
+        values = list(self.answers_data[question_id].values())
+        plt.bar(names, values)
+        plt.savefig("bar.png")
+
+    def save_pie_plot(self, question_id):
+        names = list(self.answers_data[question_id].keys())
+        values = list(self.answers_data[question_id].values())
+        plt.pie(names, values)
+        plt.savefig("pie.png")
+
+    def bar(self, bot, update, args):
+        question_id = args[0]
+        if self.graph.has_node(question_id):
+            self.save_bar_plot(question_id)
+            print("Saved")
+            file = open('bar.png', 'rb')
+            bot.send_poto(chat_id=update.message.chat_id,
+                          photo=file)
+            file.close()
+        else:
+            bot.send_message(chat_id=update.message.chat_id, text="No existe la pregunta seleccionada")
+
+    def pie(self, bot, update, args):
+        question_id = args[0]
+        if self.graph.has_node(question_id):
+            self.save_pie_plot(question_id)
+            file = open('pie.png'.encode('utf-8'), 'rb')
+            print("Opened")
+            bot.send_poto(chat_id=update.message.chat_id,
+                          photo=file)
+            print("Photo sended")
+            file.close()
+        else:
+            bot.send_message(chat_id=update.message.chat_id, text="No existe la pregunta seleccionada")
 
     def report(self, bot, update):
         text = "*pregunta valor respostes*\n"
         for item in self.answers_data.items():
             for answer in item[1].items():
                 print(answer)
-                text += item[0] + " " + answer[0] +" " +  str(answer[1]) + "\n";
+                text += item[0] + " " + answer[0] + " " + str(answer[1]) + "\n";
         bot.send_message(chat_id=update.message.chat_id, text=text,
                          parse_mode=ParseMode.MARKDOWN)
