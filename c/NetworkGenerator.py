@@ -34,16 +34,7 @@ class NetworkGenerator:
         self.poll_edges.append((str(a), str(b)))
         self.graph.add_edge(str(a), str(b))
 
-    """
-    Given a node P of a poll the ordering is 
-    [Pi, Ri, Ai, .., An]
-    if P is a final node, meaning that is the last question then 
-    Pi = END 
-    
-    Given a node P that is not in a poll then the ordering is 
-    [Ri, Ai, .., An]
-    
-    """
+
     def draw(self):
         #node = 'E'
         #succesors = list(self.graph.successors(node))
