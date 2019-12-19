@@ -216,7 +216,7 @@ class BotTalker:
             self.dispatcher.add_handler(MessageHandler(Filters.text, self.read_answer))
 
         else:
-            bot.send_message(chat_id=update.message.chat_id, text="No existe la encuesta seleccionada")
+            bot.send_message(chat_id=update.message.chat_id, text="La enquesta seleccionada no existeix")
 
     def save_bar_plot(self, question_id):
         names = list(self.answers_data[question_id].keys())
