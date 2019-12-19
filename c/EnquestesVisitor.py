@@ -69,7 +69,7 @@ class EnquestesVisitor(ParseTreeVisitor):
         while alt is not None:
             answer_id = str(alt.innerAlt().NUMBER())
             item_id = str(alt.innerAlt().identifier().ID())
-            self.alternative_pairs[str(ctx.identifier(1).ID())].append((answer_id, item_id))
+            self.alternative_pairs[str(ctx.identifier(1).ID())].append((str(answer_id), str(item_id)))
             alt = alt.alternativeAnswer()
 
         return self.visitChildren(ctx)

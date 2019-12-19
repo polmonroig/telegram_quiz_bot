@@ -21,17 +21,17 @@ class NetworkGenerator:
 
 
     def add_item_edge(self, a, b, label):
-        self.item_edges.append((a, b))
+        self.item_edges.append((str(a), str(b)))
         self.graph.add_edge(str(a), str(b))
-        self.labels[(a, b)] = label
+        self.labels[(str(a), str(b))] = str(label)
 
     def add_alt_edge(self, a, b, label):
-        self.alt_edges.append((a, b))
-        self.graph.add_edge(str(a), str(b),  content=label)
-        self.labels[(a, b)] = label
+        self.alt_edges.append((str(a), str(b)))
+        self.graph.add_edge(str(a), str(b),  content=str(label))
+        self.labels[(a, b)] = str(label)
 
     def add_poll_edge(self, a, b):
-        self.poll_edges.append((a, b))
+        self.poll_edges.append((str(a), str(b)))
         self.graph.add_edge(str(a), str(b))
 
     """
@@ -45,17 +45,17 @@ class NetworkGenerator:
     
     """
     def draw(self):
-        node = 'E'
-        succesors = list(self.graph.successors(node))
-        while succesors:
-            if node != 'E':
-                print("Question:", self.graph.nodes[node]['content'])
-                print("Answers:")
-                for i, answer in enumerate(self.graph.nodes[succesors[1]]['content']):
-                    print(str(i) + ":",answer)
-
-            node = succesors[0]
-            succesors = list(self.graph.successors(node))
+        #node = 'E'
+        #succesors = list(self.graph.successors(node))
+        #while succesors:
+        #   if node != 'E':
+        #        print("Question:", self.graph.nodes[node]['content'])
+        #        print("Answers:")
+        #        for i, answer in enumerate(self.graph.nodes[succesors[1]]['content']):
+        #            print(str(i) + ":",answer)
+        #
+        #   node = succesors[0]
+        #    succesors = list(self.graph.successors(node))
 
             # specifiy edge labels explicitly
         pos = nx.circular_layout(self.graph)
@@ -69,4 +69,6 @@ class NetworkGenerator:
 
 
     def save_graph(self):
-        pickle.dump(self.graph, open("graph.p", "wb"))
+        file = open("../bot/graph.p", "wb")
+        pickle.dump(self.graph, file)
+        file.close()

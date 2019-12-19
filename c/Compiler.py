@@ -31,7 +31,7 @@ class Compiler:
 
         # add base nodes
         for i, question in zip(visitor.question_ids, visitor.questions):
-            self.generator.add_node_with_content(i, question)
+            self.generator.add_node_with_content(i, str(question))
 
         for i, answer in zip(visitor.answer_ids, visitor.answers):
             self.generator.add_node_with_content(i, answer)
@@ -62,7 +62,6 @@ class Compiler:
             for a in alt[1]:
                 self.generator.add_alt_edge(questionId, visitor.item_pairs[a[1]][0], a[0])
 
-        self.generator.draw()
 
 
     def save_graph(self):

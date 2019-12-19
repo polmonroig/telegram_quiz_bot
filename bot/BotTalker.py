@@ -1,7 +1,8 @@
 # importing Telegram API
 from telegram.ext import Updater
 from telegram.ext import CommandHandler
-
+import pickle
+import networkx as nx
 
 class BotTalker:
 
@@ -9,6 +10,7 @@ class BotTalker:
         self.TOKEN = token
         self.updater = Updater(token=token)
         self.dispatcher = self.updater.dispatcher
+        self.graph = None
 
     def add_commands(self):
         self.dispatcher.add_handler(CommandHandler('start', self.start))
@@ -20,6 +22,9 @@ class BotTalker:
         self.dispatcher.add_handler(CommandHandler('report', self.report))
 
     def init(self):
+        file = open("graph.p", "rb")
+        self.graph = pickle.load(file)
+        file.close()
         self.updater.start_polling()
 
     @staticmethod
@@ -28,6 +33,12 @@ class BotTalker:
 
     @staticmethod
     def help(bot, update):
+        """
+        TODO
+        :param bot:
+        :param update:
+        :return:
+        """
         bot.send_message(chat_id=update.message.chat_id, text="Help screen not implemented")
 
     @staticmethod
