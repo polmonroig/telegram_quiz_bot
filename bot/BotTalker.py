@@ -200,6 +200,9 @@ class BotTalker:
     def pie(bot, update):
         bot.send_message(chat_id=update.message.chat_id, text="Not implemented")
 
-    @staticmethod
-    def report(bot, update):
+
+    def report(self, bot, update):
+        text = "pregunta valor respostes\n"
+        for item in self.answers_data.items():
+            print(item)
         bot.send_message(chat_id=update.message.chat_id, text="Not implemented")
