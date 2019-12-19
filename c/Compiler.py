@@ -4,7 +4,7 @@ from EnquestesLexer import EnquestesLexer
 from EnquestesParser import EnquestesParser
 from EnquestesVisitor import EnquestesVisitor
 from NetworkGenerator import NetworkGenerator
-import pickle
+
 
 
 class Compiler:
@@ -66,5 +66,6 @@ class Compiler:
 
 
     def save_graph(self):
-        pickle.dump( self.generator, open( "GraphGenerator.p", "wb" ))
+        self.generator.save_graph()
+
 
