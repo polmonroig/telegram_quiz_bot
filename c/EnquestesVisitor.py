@@ -52,7 +52,7 @@ class EnquestesVisitor(ParseTreeVisitor):
                 text = answer.text().STRING()
             else:
                 text = answer.text().ID()
-            self.answers[-1].append( str(text))
+            self.answers[-1].append((str(answer.NUMBER()),  str(text)))
         return self.visitChildren(ctx)
 
 

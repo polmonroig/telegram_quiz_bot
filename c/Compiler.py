@@ -31,17 +31,17 @@ class Compiler:
 
         # add base nodes
         for i, question in zip(visitor.question_ids, visitor.questions):
-            self.generator.add_node_with_content(i, str(question))
+            self.generator.add_node_with_content(i, str(question), "question")
 
         for i, answer in zip(visitor.answer_ids, visitor.answers):
-            self.generator.add_node_with_content(i, answer)
+            self.generator.add_node_with_content(i, answer, "answer")
 
         # add the end node
-        self.generator.add_node("END")
+        self.generator.add_node("END", "end")
 
         # add poll relationships
         for poll_id, item_list in zip(visitor.poll_ids, visitor.poll_item_list):
-            self.generator.add_node(poll_id)
+            self.generator.add_node(poll_id, "poll")
             items_ids = str(item_list).split()
             items = []
             for id in items_ids:
