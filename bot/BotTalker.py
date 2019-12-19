@@ -18,6 +18,7 @@ class BotTalker:
         self.node_stack = None
         self.successors = None
         self.quiz_started = False
+        self.answers_data = {}
 
     def add_commands(self):
         self.dispatcher.add_handler(CommandHandler('start', self.start))
@@ -50,16 +51,26 @@ class BotTalker:
         bot.send_message(chat_id=update.message.chat_id,
                          text="Pol Monroig Company\npol.monroig@est.fib.upc.edu")
 
+    def update_answers(self):
+        if self.node in self.answers_data:
+            if self.answer in self.answers_data[self.node]:
+                self.answers_data[self.node][self.answer] += 1
+            else:
+                self.answers_data[self.node][self.answer] = 1
+        else:
+            self.answers_data[self.node] = {self.answer : 1}
+
     def read_answer(self, bot, update):
         msg = update.message.text
         if self.quiz_started:
             self.answer = msg
-            print("Answer received")
+            self.update_answers()
             question = self.get_question()
             if question is not None:
                 bot.send_message(chat_id=update.message.chat_id, text=question)
             else:
                 bot.send_message(chat_id=update.message.chat_id, text=self.poll_id + "> Gràcies pel teu temps!")
+                print(self.answers_data)
                 # reset bot state
                 self.answer = None
                 self.quiz_started = False
@@ -80,7 +91,6 @@ class BotTalker:
                     content = self.graph.edges[self.node, i]['content']
                     if content == self.answer:
                         return i
-                return None
         return None
 
     def get_question_string(self):
@@ -93,7 +103,6 @@ class BotTalker:
         for answer in self.graph.nodes[answer_index]['content']:
             question += "\n" + answer[0] + ": " + answer[1]
         return question
-
 
     def in_alternative_branch(self):
         """
@@ -136,8 +145,6 @@ class BotTalker:
         # update node
 
         alternative_index = self.find_alternative_with_answer()
-
-        print("sdadsadsa")
         if alternative_index is not None:  # node alternative has been found
             if not self.in_alternative_branch():  # if we are in the main branch we must save the context
                 self.node_stack = self.node
