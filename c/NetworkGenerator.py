@@ -13,8 +13,12 @@ class NetworkGenerator:
         self.alt_edges = []
         self.labels = {}
 
-    def add_node(self, node, content):
+    def add_node_with_content(self, node, content):
         self.graph.add_node(str(node), content=content)
+
+    def add_node(self, node):
+        self.graph.add_node(str(node))
+
 
     def add_item_edge(self, a, b, label):
         self.item_edges.append((a, b))

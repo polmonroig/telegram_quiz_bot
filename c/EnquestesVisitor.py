@@ -11,7 +11,9 @@ class EnquestesVisitor(ParseTreeVisitor):
 
     def __init__(self):
         self.question_ids = []
+        self.questions = []
         self.answer_ids = []
+        self.answers = []
         self.alternative_pairs = {}
         self.item_pairs = {}
         self.poll_ids = []
@@ -31,16 +33,26 @@ class EnquestesVisitor(ParseTreeVisitor):
     def visitText(self, ctx:EnquestesParser.TextContext):
         return self.visitChildren(ctx)
 
-
     # Visit a parse tree produced by EnquestesParser#question.
     def visitQuestion(self, ctx:EnquestesParser.QuestionContext):
         self.question_ids.append(ctx.identifier().ID())
+        if ctx.text().ID() is None:
+            self.questions.append(ctx.text().STRING())
+        else:
+            self.questions.append(ctx.text().ID())
         return self.visitChildren(ctx)
 
 
     # Visit a parse tree produced by EnquestesParser#answer.
     def visitAnswer(self, ctx:EnquestesParser.AnswerContext):
         self.answer_ids.append(ctx.identifier().ID())
+        self.answers.append([])
+        for answer in ctx.numeratedAnswer():
+            if answer.text().ID() is None:
+                text = answer.text().STRING()
+            else:
+                text = answer.text().ID()
+            self.answers[-1].append( str(text))
         return self.visitChildren(ctx)
 
 

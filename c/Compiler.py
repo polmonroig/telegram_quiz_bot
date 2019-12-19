@@ -25,17 +25,16 @@ class Compiler:
         parser = EnquestesParser(token_stream)
         self.tree = parser.root()
 
-
     def visit(self):
         visitor = EnquestesVisitor()
         visitor.visitRoot(self.tree)  # save questions and things
 
         # add base nodes
-        for q in visitor.question_ids:
-            self.generator.add_node(q, "")
+        for i, question in zip(visitor.question_ids, visitor.questions):
+            self.generator.add_node_with_content(i, question)
 
-        for a in visitor.answer_ids:
-            self.generator.add_node(a, "")
+        for i, answer in zip(visitor.answer_ids, visitor.answers):
+            self.generator.add_node_with_content(i, answer)
 
         # add the end node
         self.generator.add_node("END")
