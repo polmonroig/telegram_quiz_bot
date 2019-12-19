@@ -44,19 +44,19 @@ class BotTalker:
     @staticmethod
     def help(bot, update):
         bot.send_message(chat_id=update.message.chat_id, text="*Ajuda del chatbot de enquestes*\n"
-                         "/start: inicialitza el bot\n"
-                         "/help: mostra la pantalla d'ajuda actual amb la descripcio de cada comanda\n"
-                         "/author: mostra la descripcio de l'autor de la aplicacio\n"
-                         "/quiz <idEnquesta> donat el identificador de una encuesta especifica,"
+                                                              "/start: inicialitza el bot\n"
+                                                              "/help: mostra la pantalla d'ajuda actual amb la descripcio de cada comanda\n"
+                                                              "/author: mostra la descripcio de l'autor de la aplicacio\n"
+                                                              "/quiz <idEnquesta> donat el identificador de una encuesta especifica,"
                                                               "s'initializa la secuencia de preguntes\n"
-                         "/bar <idPregunta> donat el identificador de una pregunta especifica es mostra "
+                                                              "/bar <idPregunta> donat el identificador de una pregunta especifica es mostra "
                                                               "un diagrama de barres cada resposta de "
                                                               "la pregunta seleccionada i la quantitat de "
                                                               "cada resposta\n"
-                         "/pie <idPregunta> donat el identificador de una pregunta especifica es mostra"
+                                                              "/pie <idPregunta> donat el identificador de una pregunta especifica es mostra"
                                                               "un diagrama de formatget similar al diagrama "
                                                               "de barres nomes que amb un altre tipus de visualitzacio\n"
-                         "/report mostra las estadistiques de totes les preguntes\n",
+                                                              "/report mostra las estadistiques de totes les preguntes\n",
                          parse_mode=ParseMode.MARKDOWN)
 
     @staticmethod
@@ -218,7 +218,6 @@ class BotTalker:
         else:
             bot.send_message(chat_id=update.message.chat_id, text="No existe la encuesta seleccionada")
 
-
     def save_bar_plot(self, question_id):
         names = list(self.answers_data[question_id].keys())
         values = list(self.answers_data[question_id].values())
@@ -227,34 +226,44 @@ class BotTalker:
         plt.savefig("bar.png")
 
     def save_pie_plot(self, question_id):
+        print("Saving")
         names = list(self.answers_data[question_id].keys())
         values = list(self.answers_data[question_id].values())
+        print(values)
+        print(names)
         plt.clf()
-        plt.pie(names, values)
+        print("Clear")
+        plt.pie(values, labels=names, autopct='%1.1f%%')
+        print("Pie")
+        plt.axis('equal')
         plt.savefig("pie.png")
+        print("Saved")
 
     def bar(self, bot, update, args):
         question_id = args[0]
-        if self.graph.has_node(question_id):
+        if question_id not in self.answers_data:
+            bot.send_message(chat_id=update.message.chat_id, text="No hi ha dades per la pregunta seleccionada")
+        elif self.graph.has_node(question_id):
             self.save_bar_plot(question_id)
-            print("Saved")
             file = open('bar.png', 'rb')
             bot.send_photo(chat_id=update.message.chat_id,
-                          photo=file)
+                           photo=file)
             file.close()
         else:
-            bot.send_message(chat_id=update.message.chat_id, text="No existe la pregunta seleccionada")
+            bot.send_message(chat_id=update.message.chat_id, text="La pregunta seleccionada no existeix")
 
     def pie(self, bot, update, args):
         question_id = args[0]
-        if self.graph.has_node(question_id):
+        if question_id not in self.answers_data:
+            bot.send_message(chat_id=update.message.chat_id, text="No hi ha dades per la pregunta seleccionada")
+        elif self.graph.has_node(question_id):
             self.save_pie_plot(question_id)
             file = open('pie.png', 'rb')
             bot.send_photo(chat_id=update.message.chat_id,
                            photo=file)
             file.close()
         else:
-            bot.send_message(chat_id=update.message.chat_id, text="No existe la pregunta seleccionada")
+            bot.send_message(chat_id=update.message.chat_id, text="La pregunta seleccionada no existeix")
 
     def report(self, bot, update):
         text = "*pregunta valor respostes*\n"
