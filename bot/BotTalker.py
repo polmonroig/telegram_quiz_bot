@@ -4,6 +4,7 @@ from telegram.ext import CommandHandler, MessageHandler, Filters
 import pickle
 import networkx as nx
 
+
 class BotTalker:
 
     def __init__(self, token):
@@ -15,6 +16,8 @@ class BotTalker:
         self.poll_id = None
         self.node = None
         self.node_stack = None
+        self.successors = None
+        self.quiz_started = False
 
     def add_commands(self):
         self.dispatcher.add_handler(CommandHandler('start', self.start))
@@ -47,33 +50,79 @@ class BotTalker:
         bot.send_message(chat_id=update.message.chat_id,
                          text="Pol Monroig Company\npol.monroig@est.fib.upc.edu")
 
-
     def read_answer(self, bot, update):
         msg = update.message.text
-        self.answer = msg
-        print("Answered")
-        question = self.get_question()
-        if question is not None:
-            bot.send_message(chat_id=update.message.chat_id, text=question)
-        else:
-            bot.send_message(chat_id=update.message.chat_id, text=self.poll_id + "> Gràcies pel teu temps!")
+        if self.quiz_started:
+            self.answer = msg
+            print("Answer received")
+            question = self.get_question()
+            if question is not None:
+                bot.send_message(chat_id=update.message.chat_id, text=question)
+            else:
+                bot.send_message(chat_id=update.message.chat_id, text=self.poll_id + "> Gràcies pel teu temps!")
+                # reset bot state
+                self.answer = None
+                self.quiz_started = False
 
-    def find_node_by_type(self, successors, type):
-        for i in successors:
-            if self.graph.nodes[i]['type'] == type:
+    def find_node_by_type(self, node_type):
+        for i in self.successors:
+            if self.graph.nodes[i]['type'] == node_type:
                 return i
         raise LookupError("Index of identifier not found,\n tip: "
                           "check the correct syntax of the language")
 
-    def find_alternative_with_answer(self, successors):
-        for i in successors:
-            if self.graph.nodes[i]['type'] == "question":
-                if self.graph.edges[self.node, i]['content'] == self.answer:
-                    return i
+    def find_alternative_with_answer(self):
+        for i in self.successors:
+            node_type = self.graph.nodes[i]['type']
+            if node_type and self.graph.nodes[i]['type'] == "question":
+                edge = self.graph.edges[self.node, i]
+                if 'content' in edge:
+                    content = self.graph.edges[self.node, i]['content']
+                    if content == self.answer:
+                        return i
+                return None
         return None
+
+    def get_question_string(self):
+        """
+        Generates a string for the current question-answer pair
+        :return: a string with the question and the possible answers
+        """
+        question = self.poll_id + ">" + self.graph.nodes[self.node]['content']
+        answer_index = self.find_node_by_type("answer")
+        for answer in self.graph.nodes[answer_index]['content']:
+            question += "\n" + answer[0] + ": " + answer[1]
+        return question
+
+
+    def in_alternative_branch(self):
+        """
+        Determines if we are in a alternative edge(branch)
+        :return: if we have saved a reference to the main branch
+        """
+        return self.node_stack is not None
+
+    def reset_node(self):
+        """
+        Resets the node to the main branch
+        """
+        self.node = self.node_stack
+        self.node_stack = None
+        self.update()
+
+    def is_poll_end(self):
+        """
+        Determines if the current poll has ended
+        :return: if the next question does not exist
+        """
+        return self.successors[0] == "END"
 
     def get_question(self):
         """
+               Get question has all the logic of the graph navigability,
+               it works by defining a node element that represents the current node
+               we move this node around and if we go to an alternative question (branch)
+               we save the node.
                Given a node P of a poll the ordering of its successors is
                [Pi, Ri, Ai, .., An]
                if P is a final node, meaning that is the last question then
@@ -82,51 +131,57 @@ class BotTalker:
                Given a node P that is not in a poll then the ordering of its successors is
                [Ri, Ai, .., An]
 
-               """
-        successors = list(self.graph.successors(self.node))
-        # check if an alternative question exists
-        if len(successors) > 2:
-            alt_index = self.find_alternative_with_answer(successors)
-            if alt_index is not None:
-                # push current question reference to the stack
+
+        """
+        # update node
+
+        alternative_index = self.find_alternative_with_answer()
+
+        print("sdadsadsa")
+        if alternative_index is not None:  # node alternative has been found
+            if not self.in_alternative_branch():  # if we are in the main branch we must save the context
                 self.node_stack = self.node
-                # change context to a new question branch
-                self.node = alt_index
-                return self.get_question()
+            self.node = alternative_index  # move to alternative branch
+            self.update()
+        elif self.in_alternative_branch():  # no alternative, move back to main branch
+            self.reset_node()
+            if self.is_poll_end():  # no more questions in poll
+                return None
+        else:
+            if self.is_poll_end():  # no more questions in poll
+                return None
+            self.next()
 
-        elif self.node_stack is not None:
-            # return to main branch
-            self.node = self.node_stack
-            # remove reference
-            self.node_stack = None
-        # end of poll
-        if successors[0] == "END":
-            return None
+        # get display_text
+        display_text = self.get_question_string()
+        return display_text
 
-        question_index = self.find_node_by_type(successors, "question")
-        question = self.poll_id + ">" + self.graph.nodes[question_index]['content']
-        self.node = successors[0]
-        successors = list(self.graph.successors(self.node))
-        answer_index = self.find_node_by_type(successors, "answer")
-        for answer in self.graph.nodes[answer_index]['content']:
-            question += "\n" + answer[0] + ": " + answer[1]
+    def update(self):
+        self.successors = list(self.graph.successors(self.node))
 
-        return question
+    def next(self):
+        """
+        Advance the node to the next question
+        """
+        self.node = self.find_node_by_type("question")
+        self.successors = list(self.graph.successors(self.node))
+
 
     def quiz(self, bot, update, args):
+        self.quiz_started = True
         self.poll_id = args[0]
+        # find first question
         self.node = self.poll_id
+        self.update()
+        self.next()
         if self.graph.has_node(self.poll_id):
             bot.send_message(chat_id=update.message.chat_id, text="Enquesta " + self.poll_id + ":")
 
             # display question
-            question = self.get_question()
-            print(question)
+            question = self.get_question_string()
             bot.send_message(chat_id=update.message.chat_id, text=question)
             # read answer
             self.dispatcher.add_handler(MessageHandler(Filters.text, self.read_answer))
-
-
         else:
             bot.send_message(chat_id=update.message.chat_id, text="No existe la encuesta seleccionada")
 
@@ -141,5 +196,3 @@ class BotTalker:
     @staticmethod
     def report(bot, update):
         bot.send_message(chat_id=update.message.chat_id, text="Not implemented")
-
-
