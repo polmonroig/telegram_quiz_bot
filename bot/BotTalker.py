@@ -1,6 +1,7 @@
 # importing Telegram API
 from telegram.ext import Updater
 from telegram.ext import CommandHandler, MessageHandler, Filters
+from telegram import ParseMode
 import pickle
 import networkx as nx
 
@@ -202,7 +203,10 @@ class BotTalker:
 
 
     def report(self, bot, update):
-        text = "pregunta valor respostes\n"
+        text = "*pregunta valor respostes*\n"
         for item in self.answers_data.items():
-            print(item)
-        bot.send_message(chat_id=update.message.chat_id, text="Not implemented")
+            for answer in item[1].items():
+                print(answer)
+                text += item[0] + " " + answer[0] +" " +  str(answer[1]) + "\n";
+        bot.send_message(chat_id=update.message.chat_id, text=text,
+                         parse_mode=ParseMode.MARKDOWN)
