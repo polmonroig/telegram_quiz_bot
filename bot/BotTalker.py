@@ -219,16 +219,17 @@ class BotTalker:
             bot.send_message(chat_id=update.message.chat_id, text="No existe la encuesta seleccionada")
 
 
-
     def save_bar_plot(self, question_id):
         names = list(self.answers_data[question_id].keys())
         values = list(self.answers_data[question_id].values())
+        plt.clf()
         plt.bar(names, values)
         plt.savefig("bar.png")
 
     def save_pie_plot(self, question_id):
         names = list(self.answers_data[question_id].keys())
         values = list(self.answers_data[question_id].values())
+        plt.clf()
         plt.pie(names, values)
         plt.savefig("pie.png")
 
@@ -238,7 +239,7 @@ class BotTalker:
             self.save_bar_plot(question_id)
             print("Saved")
             file = open('bar.png', 'rb')
-            bot.send_poto(chat_id=update.message.chat_id,
+            bot.send_photo(chat_id=update.message.chat_id,
                           photo=file)
             file.close()
         else:
@@ -248,11 +249,9 @@ class BotTalker:
         question_id = args[0]
         if self.graph.has_node(question_id):
             self.save_pie_plot(question_id)
-            file = open('pie.png'.encode('utf-8'), 'rb')
-            print("Opened")
-            bot.send_poto(chat_id=update.message.chat_id,
-                          photo=file)
-            print("Photo sended")
+            file = open('pie.png', 'rb')
+            bot.send_photo(chat_id=update.message.chat_id,
+                           photo=file)
             file.close()
         else:
             bot.send_message(chat_id=update.message.chat_id, text="No existe la pregunta seleccionada")
