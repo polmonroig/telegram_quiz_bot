@@ -6,7 +6,6 @@ from EnquestesVisitor import EnquestesVisitor
 from NetworkGenerator import NetworkGenerator
 
 
-
 class Compiler:
     def __init__(self):
         self.text = None
@@ -44,8 +43,8 @@ class Compiler:
             self.generator.add_node(poll_id, "poll")
             items_ids = str(item_list).split()
             items = []
-            for id in items_ids:
-                items.append(visitor.item_pairs[id])
+            for i_id in items_ids:
+                items.append(visitor.item_pairs[i_id])
 
             self.generator.add_poll_edge(str(poll_id), items[0][0])
             for i in range(1, len(items)):
@@ -62,9 +61,5 @@ class Compiler:
             for a in alt[1]:
                 self.generator.add_alt_edge(questionId, visitor.item_pairs[a[1]][0], a[0])
 
-
-
     def save_graph(self):
         self.generator.save_graph()
-
-
