@@ -33,6 +33,7 @@ class BotTalker:
 
     def init(self):
         self.dispatcher.add_handler(CommandHandler('start', self.start))
+        self.add_commands()
         file = open("graph.p", "rb")
         self.graph = pickle.load(file)
         file.close()
@@ -42,8 +43,8 @@ class BotTalker:
             file.close()
         self.updater.start_polling()
 
-    def start(self, bot, update):
-        self.add_commands()
+    @staticmethod
+    def start(bot, update):
         bot.send_message(chat_id=update.message.chat_id, text="Hola soc un robot d'enquestes, enviam /help per veure "
                                                               "el que puc fer!")
 
@@ -276,6 +277,6 @@ class BotTalker:
         text = "*pregunta valor respostes*\n"
         for item in self.answers_data.items():
             for answer in item[1].items():
-                text += item[0] + " " + answer[0] + " " + str(answer[1]) + "\n";
+                text += item[0] + " " + answer[0] + " " + str(answer[1]) + "\n"
         bot.send_message(chat_id=update.message.chat_id, text=text,
                          parse_mode=ParseMode.MARKDOWN)
