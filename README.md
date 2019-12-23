@@ -62,13 +62,15 @@ END
 Then you need to run the test.main.py file in the c folder where file is the file where the 
 quiz has been written 
 ```
-python c/test.main.py file
+cd c 
+python test.main.py file
 ```
 This will create a pickle file in the bot folder called graph.p,
 this file contains the quiz structure in a graph. 
 Finally to run the bot you need to initialize it using 
 ```
-python bot/bot.py  
+cd bot 
+python bot.py  
 ```
 
 ## Deployment ##
