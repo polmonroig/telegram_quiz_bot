@@ -17,8 +17,8 @@ class NetworkGenerator:
     def add_node_with_content(self, node, content, node_type):
         self.graph.add_node(str(node), content=content, in_poll=False, type=node_type)
 
-    def add_node(self, node, type):
-        self.graph.add_node(str(node), in_poll=False, type=type)
+    def add_node(self, node, node_type):
+        self.graph.add_node(str(node), in_poll=False, type=node_type)
 
     def add_item_edge(self, a, b, label):
         self.item_edges.append((str(a), str(b)))

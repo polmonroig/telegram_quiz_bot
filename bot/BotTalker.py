@@ -4,7 +4,7 @@ from telegram.ext import CommandHandler, MessageHandler, Filters
 from telegram import ParseMode
 import pickle
 import matplotlib.pyplot as plt
-import networkx as nx
+from os.path import isfile
 
 
 class BotTalker:
@@ -20,10 +20,10 @@ class BotTalker:
         self.node_stack = None
         self.successors = None
         self.quiz_started = False
+        self.TALKER_PICKLE_PATH = "talker.p"
         self.answers_data = {}
 
     def add_commands(self):
-        self.dispatcher.add_handler(CommandHandler('start', self.start))
         self.dispatcher.add_handler(CommandHandler('help', self.help))
         self.dispatcher.add_handler(CommandHandler('author', self.author))
         self.dispatcher.add_handler(CommandHandler('quiz', self.quiz, pass_args=True))
@@ -32,31 +32,44 @@ class BotTalker:
         self.dispatcher.add_handler(CommandHandler('report', self.report))
 
     def init(self):
+        self.dispatcher.add_handler(CommandHandler('start', self.start))
         file = open("graph.p", "rb")
         self.graph = pickle.load(file)
         file.close()
+        if isfile(self.TALKER_PICKLE_PATH):
+            file = open(self.TALKER_PICKLE_PATH, 'rb')
+            self.answers_data = pickle.load(file)
+            file.close()
         self.updater.start_polling()
 
-    @staticmethod
-    def start(bot, update):
-        bot.send_message(chat_id=update.message.chat_id, text="Hello world!")
+    def start(self, bot, update):
+        self.add_commands()
+        bot.send_message(chat_id=update.message.chat_id, text="Hola soc un robot d'enquestes, enviam /help per veure "
+                                                              "el que puc fer!")
 
     @staticmethod
     def help(bot, update):
         bot.send_message(chat_id=update.message.chat_id, text="*Ajuda del chatbot de enquestes*\n"
                                                               "/start: inicialitza el bot\n"
-                                                              "/help: mostra la pantalla d'ajuda actual amb la descripcio de cada comanda\n"
-                                                              "/author: mostra la descripcio de l'autor de la aplicacio\n"
-                                                              "/quiz <idEnquesta> donat el identificador de una encuesta especifica,"
+                                                              "/help: mostra la pantalla d'ajuda actual amb la "
+                                                              "descripcio de cada comanda\n "
+                                                              "/author: mostra la descripcio de l'autor de la "
+                                                              "aplicacio\n "
+                                                              "/quiz <idEnquesta> donat el identificador de una "
+                                                              "encuesta especifica, "
                                                               "s'initializa la secuencia de preguntes\n"
-                                                              "/bar <idPregunta> donat el identificador de una pregunta especifica es mostra "
+                                                              "/bar <idPregunta> donat el identificador de una "
+                                                              "pregunta especifica es mostra "
                                                               "un diagrama de barres cada resposta de "
                                                               "la pregunta seleccionada i la quantitat de "
                                                               "cada resposta\n"
-                                                              "/pie <idPregunta> donat el identificador de una pregunta especifica es mostra"
+                                                              "/pie <idPregunta> donat el identificador de una "
+                                                              "pregunta especifica es mostra "
                                                               "un diagrama de formatget similar al diagrama "
-                                                              "de barres nomes que amb un altre tipus de visualitzacio\n"
-                                                              "/report mostra las estadistiques de totes les preguntes\n",
+                                                              "de barres nomes que amb un altre tipus de "
+                                                              "visualitzacio\n "
+                                                              "/report mostra las estadistiques de totes les "
+                                                              "preguntes\n",
                          parse_mode=ParseMode.MARKDOWN)
 
     @staticmethod
@@ -91,12 +104,12 @@ class BotTalker:
                     bot.send_message(chat_id=update.message.chat_id, text=question)
                 else:
                     bot.send_message(chat_id=update.message.chat_id, text=self.poll_id + "> Gràcies pel teu temps!")
-                    print(self.answers_data)
                     # reset bot state
                     self.answer = None
                     self.quiz_started = False
+                    # save bot data
                     file = open("talker.p", "wb")
-                    pickle.dump(self, file)
+                    pickle.dump(self.answers_data, file)
                     file.close()
             else:
                 bot.send_message(chat_id=update.message.chat_id, text="Esa no es una respuesta valida")
@@ -226,18 +239,12 @@ class BotTalker:
         plt.savefig("bar.png")
 
     def save_pie_plot(self, question_id):
-        print("Saving")
         names = list(self.answers_data[question_id].keys())
         values = list(self.answers_data[question_id].values())
-        print(values)
-        print(names)
         plt.clf()
-        print("Clear")
         plt.pie(values, labels=names, autopct='%1.1f%%')
-        print("Pie")
         plt.axis('equal')
         plt.savefig("pie.png")
-        print("Saved")
 
     def bar(self, bot, update, args):
         question_id = args[0]
@@ -269,7 +276,6 @@ class BotTalker:
         text = "*pregunta valor respostes*\n"
         for item in self.answers_data.items():
             for answer in item[1].items():
-                print(answer)
                 text += item[0] + " " + answer[0] + " " + str(answer[1]) + "\n";
         bot.send_message(chat_id=update.message.chat_id, text=text,
                          parse_mode=ParseMode.MARKDOWN)
