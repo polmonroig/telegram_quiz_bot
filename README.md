@@ -59,9 +59,10 @@ I1 I2 I3
 END
 ``` 
 
-Then you need to run the test.main.py file in the c folder
+Then you need to run the test.main.py file in the c folder where file is the file where the 
+quiz has been written 
 ```
-python c/test.main.py 
+python c/test.main.py file
 ```
 This will create a pickle file in the bot folder called graph.p,
 this file contains the quiz structure in a graph. 
