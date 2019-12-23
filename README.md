@@ -69,4 +69,9 @@ Finally to run the bot you need to initialize it using
 ```
 python bot/bot.py  
 ```
-Beware that to be able to use the bot in telegram you need to ask for a token and enable the bot. 
+
+## Deployment ##
+To the deploy the application it is necessary to acquire a token for a telegram bot with BotFather.  
+
+## Author ##
+Pol Monroig Company 
